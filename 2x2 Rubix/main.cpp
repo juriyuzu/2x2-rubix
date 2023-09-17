@@ -7,7 +7,7 @@ void display();
 int face = 2;
 const int F = 6, Y = 2, X = 2;
 char rubix[F][Y][X] = {
-    {{'A', 'A'}, {'A', 'A'}},
+    {{'A', 'A'}, {'a', 'A'}},
     {{'B', 'B'}, {'B', 'B'}},
     {{'C', 'C'}, {'C', 'C'}},
     {{'D', 'D'}, {'D', 'D'}},
@@ -23,31 +23,58 @@ int main() {
 
 void play() {
     char a;
-    bool ccw;
+    bool cw, d;
     char hold[2];
 
     while(true) {
-        ccw = false;
+        cw = true;
+        d = true;
         cout << "> ";
         cin >> a;
+        cout << endl << a << endl;
 
         if (a == '-') {
-            ccw == true;
+            cw = false;
             cin >> a;
         }
 
         switch (a) {
             case 'F':
                 hold[0] = rubix[face][0][0];
-                rubix[face][0][0] = rubix[face][1][0];
-                rubix[face][1][0] = rubix[face][1][1];
-                rubix[face][1][1] = rubix[face][0][1];
-                rubix[face][0][1] = hold[0];
+                if (cw) {
+                    rubix[face][0][0] = rubix[face][1][0];
+                    rubix[face][1][0] = rubix[face][1][1];
+                    rubix[face][1][1] = rubix[face][0][1];
+                    rubix[face][0][1] = hold[0];
+                }
+                else {
+                    rubix[face][0][0] = rubix[face][0][1];
+                    rubix[face][0][1] = rubix[face][1][1];
+                    rubix[face][1][1] = rubix[face][1][0];
+                    rubix[face][1][0] = hold[0];
+                }
                 hold[0] = rubix[face - 2][1][0];
-                hold[1] = rubix[face  -2][1][1];
-                rubix[face - 2][1][0] = rubix[face - 1][1][1];
-                rubix[face - 2][1][1] = rubix[face - 1][0][1];
-                rubix[face - 1][1][1] = rubix[]
+                hold[1] = rubix[face - 2][1][1];
+                if (cw) {
+                    rubix[face - 2][1][0] = rubix[face - 1][1][1];
+                    rubix[face - 2][1][1] = rubix[face - 1][0][1];
+                    rubix[face - 1][1][1] = rubix[face + 2][0][1];
+                    rubix[face - 1][0][1] = rubix[face + 2][0][0];
+                    rubix[face + 2][0][1] = rubix[face + 1][0][0];
+                    rubix[face + 2][0][0] = rubix[face + 1][1][0];
+                    rubix[face + 1][0][0] = hold[0];
+                    rubix[face + 1][1][0] = hold[1];
+                }
+                else {
+                    rubix[face - 2][1][0] = rubix[face + 1][0][0];
+                    rubix[face - 2][1][1] = rubix[face + 1][1][0];
+                    rubix[face + 1][0][0] = rubix[face + 2][0][1];
+                    rubix[face + 1][1][0] = rubix[face + 2][0][0];
+                    rubix[face + 2][0][1] = rubix[face - 1][1][1];
+                    rubix[face + 2][0][0] = rubix[face - 1][0][1];
+                    rubix[face - 1][1][1] = hold[0];
+                    rubix[face - 1][0][1] = hold[1];
+                }
                 break;
             case 'B':
                 break;
@@ -59,9 +86,11 @@ void play() {
                 break;
             case 'D':
                 break;
+            default:
+                d = false;
         }
 
-        display();
+        if (d) display();
     }
 }
 
