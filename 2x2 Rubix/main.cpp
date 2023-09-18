@@ -4,21 +4,21 @@ using namespace std;
 void play();
 void display();
 void pass();
+int ccwC(int c);
 
-int face = 2;
-const int X = 11;
+const int X = 12;
 char rubix[X][X] = {
-    {'0', '0', '0', 'A', 'A', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', 'A', 'A', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}, 
-    {'B', 'B', '0', 'C', 'C', '0', 'D', 'D', '0', 'F', 'F'}, 
-    {'B', 'B', '0', 'C', 'C', '0', 'D', 'D', '0', 'F', 'F'}, 
-    {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', 'E', 'E', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', 'E', 'E', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', 'F', 'F', '0', '0', '0', '0', '0', '0'}, 
-    {'0', '0', '0', 'F', 'F', '0', '0', '0', '0', '0', '0'}, 
+    "   AA      ", 
+    "   aA      ", 
+    "           ", 
+    "Bb cC dD fF", 
+    "BB CC DD FF", 
+    "           ", 
+    "   eE      ", 
+    "   EE      ", 
+    "           ", 
+    "   fF      ", 
+    "   FF      ", 
 };
 char rubix2[X][X];
 
@@ -32,6 +32,11 @@ void play() {
     char a;
     int ccw;
     bool d;
+    int t[3][5][2] = {
+        {{3, 3}, {4, 3}, {4, 4}, {3, 4}, {3, 3}},
+        {{1, 3}, {4, 1}, {6, 4}, {3, 6}, {1, 3}},
+        {{1, 4}, {3, 1}, {6, 3}, {4, 6}, {1, 4}}
+    };
 
     display();
 
@@ -49,6 +54,10 @@ void play() {
 
         switch (a) {
             case 'F':
+                for (int i = 0 + ccw; i < 4 + ccw; i++) {
+                    for (int j = 0; j < 3; j++)
+                        rubix[t[j][i][0]] [t[j][i][1]] = rubix2[t[j][i + ccwC(ccw)][0]] [t[j][i + ccwC(ccw)][1]];
+                }
                 break;
             case 'B':
                 break;
@@ -78,7 +87,7 @@ void display() {
     cout << endl;
     for (int i = 0; i < X; i++) {
         for (int j = 0; j < X; j++) 
-            cout << (rubix[i][j] != '0' ? rubix[i][j] : ' ') << ' ';
+            cout << rubix[i][j] << ' ';
         cout << endl;
     }
 }
@@ -88,4 +97,8 @@ void pass() {
         for (int j = 0; j < X; j++) 
             rubix2[i][j] = rubix[i][j];
     }
+}
+
+int ccwC(int c) {
+    return c ? -1 : 1;
 }
