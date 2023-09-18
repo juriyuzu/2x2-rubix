@@ -3,17 +3,19 @@ using namespace std;
 
 void play();
 void display();
+void pass();
 
 int face = 2;
 const int F = 6, Y = 2, X = 2;
 char rubix[F][Y][X] = {
     {{'A', 'A'}, {'a', 'A'}},
     {{'B', 'B'}, {'B', 'B'}},
-    {{'C', 'C'}, {'C', 'C'}},
+    {{'c', 'C'}, {'C', 'C'}},
     {{'D', 'D'}, {'D', 'D'}},
     {{'E', 'E'}, {'E', 'E'}},
     {{'F', 'F'}, {'F', 'F'}}
 };
+char rubix2[F][Y][X];
 
 int main() {
     play();
@@ -23,57 +25,32 @@ int main() {
 
 void play() {
     char a;
-    bool cw, d;
-    char hold[2];
+    int ccw;
+    bool d;
+    int iFR[5][2] = {{0, 0}, {1, 0}, {1, 1}, {0, 1}, {0, 0}};
+    int oFR[5][3][2] = {{{1}, {0, 0}, {1, 0}}, {{-2}, {1, 0}, {1, 1}}, {{-1}, {1, 1}, {0, 1}}, {{2}, {0, 1}, {0, 0}}, {{1}, {0, 0}, {1, 0}}};
+
+    display();
 
     while(true) {
-        cw = true;
+        pass();
+        ccw = 0;
         d = true;
         cout << "> ";
         cin >> a;
         cout << endl << a << endl;
 
         if (a == '-') {
-            cw = false;
+            ccw = 1;
             cin >> a;
         }
 
         switch (a) {
             case 'F':
-                hold[0] = rubix[face][0][0];
-                if (cw) {
-                    rubix[face][0][0] = rubix[face][1][0];
-                    rubix[face][1][0] = rubix[face][1][1];
-                    rubix[face][1][1] = rubix[face][0][1];
-                    rubix[face][0][1] = hold[0];
-                }
-                else {
-                    rubix[face][0][0] = rubix[face][0][1];
-                    rubix[face][0][1] = rubix[face][1][1];
-                    rubix[face][1][1] = rubix[face][1][0];
-                    rubix[face][1][0] = hold[0];
-                }
-                hold[0] = rubix[face - 2][1][0];
-                hold[1] = rubix[face - 2][1][1];
-                if (cw) {
-                    rubix[face - 2][1][0] = rubix[face - 1][1][1];
-                    rubix[face - 2][1][1] = rubix[face - 1][0][1];
-                    rubix[face - 1][1][1] = rubix[face + 2][0][1];
-                    rubix[face - 1][0][1] = rubix[face + 2][0][0];
-                    rubix[face + 2][0][1] = rubix[face + 1][0][0];
-                    rubix[face + 2][0][0] = rubix[face + 1][1][0];
-                    rubix[face + 1][0][0] = hold[0];
-                    rubix[face + 1][1][0] = hold[1];
-                }
-                else {
-                    rubix[face - 2][1][0] = rubix[face + 1][0][0];
-                    rubix[face - 2][1][1] = rubix[face + 1][1][0];
-                    rubix[face + 1][0][0] = rubix[face + 2][0][1];
-                    rubix[face + 1][1][0] = rubix[face + 2][0][0];
-                    rubix[face + 2][0][1] = rubix[face - 1][1][1];
-                    rubix[face + 2][0][0] = rubix[face - 1][0][1];
-                    rubix[face - 1][1][1] = hold[0];
-                    rubix[face - 1][0][1] = hold[1];
+                for (int i = 0 + ccw; i < 4 + ccw; i++) {
+                    rubix[face][iFR[i][0]][iFR[i][1]] = rubix2[face][iFR[i + (ccw ? -1 : 1)][0]][iFR[i + (ccw ? -1 : 1)][1]];
+                    rubix[face + oFR[i][0][0]][oFR[i][1][0]][oFR[i][1][1]] = rubix2[face + oFR[i + (ccw ? -1 : 1)][0][0]][oFR[i + (ccw ? -1 : 1)][1][0]][oFR[i + (ccw ? -1 : 1)][1][1]];
+                    rubix[face + oFR[i][0][0]][oFR[i][2][0]][oFR[i][2][1]] = rubix2[face + oFR[i + (ccw ? -1 : 1)][0][0]][oFR[i + (ccw ? -1 : 1)][2][0]][oFR[i + (ccw ? -1 : 1)][2][1]];
                 }
                 break;
             case 'B':
@@ -85,6 +62,13 @@ void play() {
             case 'U':
                 break;
             case 'D':
+                break;
+            case 'x':
+                
+                break;
+            case 'y':
+                break;
+            case 'z':
                 break;
             default:
                 d = false;
@@ -134,4 +118,14 @@ void display() {
         cout << endl;
     }
     cout << endl;
+}
+
+void pass() {
+    for (int i = 0; i < F; i++) {
+        for (int j = 0; j < Y; j++) {
+            for (int k = 0; k < X; k++) {
+                rubix2[i][j][k] = rubix[i][j][k];
+            }
+        }
+    }
 }
