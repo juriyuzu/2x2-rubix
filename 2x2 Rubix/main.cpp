@@ -6,19 +6,16 @@ void display();
 void pass();
 int ccwC(int c);
 
-const int X = 12;
-char rubix[X][X] = {
+const int Y = 8, X = 12;
+char rubix[Y][X] = {
     "   AA      ", 
     "   aA      ", 
     "           ", 
-    "Bb cC dD fF", 
-    "BB CC DD FF", 
-    "           ", 
-    "   eE      ", 
-    "   EE      ", 
+    "Bb cC dD eE", 
+    "BB CC DD EE", 
     "           ", 
     "   fF      ", 
-    "   FF      ", 
+    "   FF      " 
 };
 char rubix2[X][X];
 
@@ -85,7 +82,7 @@ void play() {
 
 void display() {
     cout << endl;
-    for (int i = 0; i < X; i++) {
+    for (int i = 0; i < Y; i++) {
         for (int j = 0; j < X; j++) 
             cout << rubix[i][j] << ' ';
         cout << endl;
@@ -93,7 +90,7 @@ void display() {
 }
 
 void pass() {
-    for (int i = 0; i < X; i++) {
+    for (int i = 0; i < Y; i++) {
         for (int j = 0; j < X; j++) 
             rubix2[i][j] = rubix[i][j];
     }
